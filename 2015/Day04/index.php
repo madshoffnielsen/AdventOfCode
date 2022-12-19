@@ -11,13 +11,13 @@ while(substr($hash, 0, 5) !== "00000") {
     $hash = md5($input . $number);
 }
 
-echo 'The number: ' . $number . PHP_EOL;
+echo 'Number 1: ' . $number . PHP_EOL;
 
 $hash = md5($input . $number2);
 
-while(substr($hash, 0, 5) !== "000000") {
+while(substr($hash, 0, 6) !== "000000") {
     $number2++;
     $hash = md5($input . $number2);
 }
 
-echo 'The number 2: ' . $number2 . PHP_EOL;
+echo 'Number 2: ' . $number2 . PHP_EOL;
