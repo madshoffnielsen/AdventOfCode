@@ -1,39 +1,64 @@
 <?php
 
-$total = 0;
-$disallowed = ['ab', 'cd', 'pq', 'xy'];
-$vowels = ['a', 'e', 'i', 'o', 'u'];
+function isNiceStringPart1($str) {
+    // Check for at least three vowels.
+    $vowelCount = preg_match_all('/[aeiou]/', $str);
 
-$file = file("input.txt");
-if ($file) {
-    foreach ($file as $line) {
-        foreach ($disallowed as $badValue) {
-            if (str_contains($line, $badValue)) {
-                continue 2;
-            }
-        }
+    // Check for at least one letter that appears twice in a row.
+    $hasDoubleLetter = preg_match('/([a-z])\\1/', $str);
 
-        $letters = str_split($line);
-        $previous = '';
-
-        $double = false;
-        $countVowels = 0;
-        foreach($letters as $letter) {
-            if($letter == $previous) {
-                $double = true;
-            }
-
-            if (in_array($letter, $vowels)) {
-                $countVowels++;
-            }
-
-            $previous = $letter;
-        }
-
-        if ($double && $countVowels >= 3) {
-            $total++;
+    // Check for the disallowed substrings.
+    $disallowedSubstrings = array('ab', 'cd', 'pq', 'xy');
+    $containsDisallowed = false;
+    foreach ($disallowedSubstrings as $substring) {
+        if (strpos($str, $substring) !== false) {
+            $containsDisallowed = true;
+            break;
         }
     }
 
-    echo 'Total nice strings: ' . $total . PHP_EOL;
+    // A string is nice if it meets all the criteria.
+    return ($vowelCount >= 3 && $hasDoubleLetter && !$containsDisallowed);
 }
+
+// Read the text file line by line.
+$filename = 'input.txt';
+$niceCount = 0;
+
+$file = fopen($filename, 'r');
+if ($file) {
+    while (($line = fgets($file)) !== false) {
+        if (isNiceStringPart1(trim($line))) {
+            $niceCount++;
+        }
+    }
+    fclose($file);
+}
+
+echo "Number of nice strings part 1: " . $niceCount . "\n";
+
+function isNiceStringPart2($str) {
+    // Check for a pair of any two letters that appears at least twice in the string without overlapping.
+    $pairPattern = '/(..).*\1/';
+
+    // Check for a letter which repeats with exactly one letter between them.
+    $repeatWithOneInBetween = '/(.).\1/';
+
+    return (preg_match($pairPattern, $str) && preg_match($repeatWithOneInBetween, $str));
+}
+
+// Read the text file line by line.
+$filename = 'input.txt';
+$niceCount = 0;
+
+$file = fopen($filename, 'r');
+if ($file) {
+    while (($line = fgets($file)) !== false) {
+        if (isNiceStringPart2(trim($line))) {
+            $niceCount++;
+        }
+    }
+    fclose($file);
+}
+
+echo "Number of nice strings part 2: " . $niceCount;
