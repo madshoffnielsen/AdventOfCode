@@ -1,17 +1,13 @@
 <?php
 // File path
-$filename = 'input.txt';
+$inputFile = 'input.txt';
 
 //--- Day 1: Sonar Sweep ---
 
 // Function to count the number of increases in depth measurements
-function countIncreases($filename) {
-    if (!file_exists($filename)) {
-        return "Error: File not found.";
-    }
-
+function countIncreases($inputFile) {
     // Read the file and get the lines
-    $lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $lines = file($inputFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $increases = 0;
 
     // Loop through the measurements, starting from the second one
@@ -24,19 +20,15 @@ function countIncreases($filename) {
     return $increases;
 }
 
-$result = countIncreases($filename);
+$result = countIncreases($inputFile);
 echo "Number of increases: $result\n";
 
 //--- Part Two ---
 
 // Function to count the number of increases in sums of three-measurement sliding windows
-function countSlidingWindowIncreases($filename) {
-    if (!file_exists($filename)) {
-        return "Error: File not found.";
-    }
-
+function countSlidingWindowIncreases($inputFile) {
     // Read the file and get the lines
-    $lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $lines = file($inputFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $increases = 0;
 
     // Iterate over the array and calculate the sums of three consecutive measurements
@@ -53,5 +45,5 @@ function countSlidingWindowIncreases($filename) {
     return $increases;
 }
 
-$result = countSlidingWindowIncreases($filename);
+$result = countSlidingWindowIncreases($inputFile);
 echo "Number of sliding window sum increases: $result\n";

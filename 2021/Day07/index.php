@@ -1,6 +1,6 @@
 <?php
 // File path
-$filename = 'input.txt';
+$inputFile = 'input.txt';
 
 //--- Day 7: The Treachery of Whales ---
 function calculateMinimumFuel($positions) {
@@ -16,7 +16,7 @@ function calculateMinimumFuel($positions) {
     return $totalFuel;
 }
 
-$input = trim(file_get_contents($filename));
+$input = trim(file_get_contents($inputFile));
 $positions = array_map('intval', explode(',', $input));
 
 // Calculate the minimum fuel
@@ -49,7 +49,7 @@ function findOptimalPosition($positions) {
     return $minFuel;
 }
 
-$input = trim(file_get_contents($filename));
+$input = trim(file_get_contents($inputFile));
 $positions = array_map('intval', explode(',', $input));
 
 // Find the minimum fuel required

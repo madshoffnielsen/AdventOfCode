@@ -1,17 +1,13 @@
 <?php
 // File path
-$filename = 'input.txt';
+$inputFile = 'input.txt';
 
 //--- Day 3: Binary Diagnostic ---
 
 // Function to calculate the power consumption based on the diagnostic report
-function calculatePowerConsumption($filename) {
-    if (!file_exists($filename)) {
-        return "Error: File not found.";
-    }
-
+function calculatePowerConsumption($inputFile) {
     // Read the file and get the binary numbers
-    $binaryNumbers = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $binaryNumbers = file($inputFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $bitLength = strlen($binaryNumbers[0]);  // Length of each binary number
 
     // Initialize counters for each bit position
@@ -51,19 +47,15 @@ function calculatePowerConsumption($filename) {
 }
 
 // Calculate and display the result
-$result = calculatePowerConsumption($filename);
+$result = calculatePowerConsumption($inputFile);
 echo "Power consumption: $result\n";
 
 //--- Part Two ---
 
 // Function to calculate the life support rating
-function calculateLifeSupportRating($filename) {
-    if (!file_exists($filename)) {
-        return "Error: File not found.";
-    }
-
+function calculateLifeSupportRating($inputFile) {
     // Read the file and get the binary numbers
-    $binaryNumbers = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $binaryNumbers = file($inputFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
     // Function to find rating based on the given criteria
     function findRating($numbers, $criteria) {
@@ -118,5 +110,5 @@ function calculateLifeSupportRating($filename) {
 }
 
 // Calculate and display the result
-$result = calculateLifeSupportRating($filename);
+$result = calculateLifeSupportRating($inputFile);
 echo "Life support rating: $result\n";

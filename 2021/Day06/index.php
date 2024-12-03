@@ -1,7 +1,7 @@
 <?php
 // File path
-$filename = 'input.txt';
-$input = trim(file_get_contents($filename));
+$inputFile = 'input.txt';
+$input = trim(file_get_contents($inputFile));
 $initialTimers = array_map('intval', explode(',', $input));
 
 //--- Day 6: Lanternfish ---

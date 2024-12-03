@@ -1,14 +1,14 @@
 <?php
 // File path
-$filename = 'input.txt';
+$inputFile = 'input.txt';
 
 // Parse the input file
-$vents = parseInput($filename);
+$vents = parseInput($inputFile);
 
 //--- Day 5: Hydrothermal Venture ---
 // Function to parse the input
-function parseInput($filename) {
-    $lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+function parseInput($inputFile) {
+    $lines = file($inputFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $vents = [];
     
     foreach ($lines as $line) {

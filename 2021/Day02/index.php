@@ -1,17 +1,13 @@
 <?php
 // File path
-$filename = 'input.txt';
+$inputFile = 'input.txt';
 
 //--- Day 2: Dive! ---
 
 // Function to process the course and calculate the final horizontal position and depth
-function calculateSubmarinePosition($filename) {
-    if (!file_exists($filename)) {
-        return "Error: File not found.";
-    }
-
+function calculateSubmarinePosition($inputFile) {
     // Read the file and get the commands
-    $commands = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $commands = file($inputFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $horizontal = 0;
     $depth = 0;
 
@@ -39,19 +35,15 @@ function calculateSubmarinePosition($filename) {
 }
 
 // Calculate and display the result
-$result = calculateSubmarinePosition($filename);
+$result = calculateSubmarinePosition($inputFile);
 echo "Final result (horizontal position * depth): $result\n";
 
 //--- Part Two ---
 
 // Function to process the course with aim and calculate the final horizontal position and depth
-function calculateSubmarinePositionWithAim($filename) {
-    if (!file_exists($filename)) {
-        return "Error: File not found.";
-    }
-
+function calculateSubmarinePositionWithAim($inputFile) {
     // Read the file and get the commands
-    $commands = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $commands = file($inputFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $horizontal = 0;
     $depth = 0;
     $aim = 0;
@@ -81,5 +73,5 @@ function calculateSubmarinePositionWithAim($filename) {
 }
 
 // Calculate and display the result
-$result = calculateSubmarinePositionWithAim($filename);
+$result = calculateSubmarinePositionWithAim($inputFile);
 echo "Final result (horizontal position * depth): $result\n";
