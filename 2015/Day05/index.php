@@ -22,10 +22,10 @@ function isNiceStringPart1($str) {
 }
 
 // Read the text file line by line.
-$filename = 'input.txt';
+$inputFile = 'input.txt';
 $niceCount = 0;
 
-$file = fopen($filename, 'r');
+$file = fopen($inputFile, 'r');
 if ($file) {
     while (($line = fgets($file)) !== false) {
         if (isNiceStringPart1(trim($line))) {
@@ -48,10 +48,10 @@ function isNiceStringPart2($str) {
 }
 
 // Read the text file line by line.
-$filename = 'input.txt';
+$inputFile = 'input.txt';
 $niceCount = 0;
 
-$file = fopen($filename, 'r');
+$file = fopen($inputFile, 'r');
 if ($file) {
     while (($line = fgets($file)) !== false) {
         if (isNiceStringPart2(trim($line))) {
