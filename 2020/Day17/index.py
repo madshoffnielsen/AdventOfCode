@@ -11,7 +11,6 @@ def parse_input(filename):
         if char == "#"
     }
 
-
 def get_neighbors(coord, dimensions):
     """Generate all neighbors of a given coordinate in n dimensions."""
     deltas = product([-1, 0, 1], repeat=dimensions)
@@ -20,7 +19,6 @@ def get_neighbors(coord, dimensions):
         for delta in deltas
         if any(delta)  # Exclude the coordinate itself
     }
-
 
 def simulate(initial_state, dimensions, cycles=6):
     """Simulate the Conway Cubes for a given number of cycles."""
@@ -34,30 +32,29 @@ def simulate(initial_state, dimensions, cycles=6):
             neighbors = get_neighbors(cube, dimensions)
             active_neighbors = len(neighbors & active)
 
-            if cube in active and active_neighbors in [2, 3]:
-                new_active.add(cube)
-            elif cube not in active and active_neighbors == 3:
-                new_active.add(cube)
+            if cube in active:
+                if active_neighbors in [2, 3]:
+                    new_active.add(cube)
+            else:
+                if active_neighbors == 3:
+                    new_active.add(cube)
 
         active = new_active
 
     return len(active)
 
+def part1(initial_state):
+    """Solve part 1: 3D space."""
+    return simulate(initial_state, dimensions=3)
 
-def solve(filename):
-    initial_state = parse_input(filename)
+def part2(initial_state):
+    """Solve part 2: 4D space."""
+    return simulate(initial_state, dimensions=4)
 
-    # Part 1: 3D simulation
-    part1_result = simulate(initial_state, dimensions=3)
+def main():
+    initial_state = parse_input("2020/Day17/input.txt")
+    print(f"Part 1: {part1(initial_state)}")
+    print(f"Part 2: {part2(initial_state)}")
 
-    # Part 2: 4D simulation
-    part2_result = simulate(initial_state, dimensions=4)
-
-    return part1_result, part2_result
-
-
-# Run the solution
-filename = "2020/Day17/input.txt"
-part1, part2 = solve(filename)
-print(f"Part 1: {part1}")
-print(f"Part 2: {part2}")
+if __name__ == "__main__":
+    main()
