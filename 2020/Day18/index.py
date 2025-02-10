@@ -1,5 +1,9 @@
 import re
 
+def read_input(filename):
+    with open(filename) as f:
+        return [line.strip() for line in f]
+
 def evaluate(expression, precedence):
     """Evaluates a mathematical expression based on the given precedence rules."""
     if precedence == "equal":
@@ -19,7 +23,9 @@ def evaluate(expression, precedence):
         # Addition has higher precedence
         def eval_simple(expr):
             while "+" in expr:
-                expr = re.sub(r"(\d+) \+ (\d+)", lambda m: str(int(m[1]) + int(m[2])), expr, count=1)
+                expr = re.sub(r"(\d+) \+ (\d+)", 
+                            lambda m: str(int(m[1]) + int(m[2])), 
+                            expr, count=1)
             tokens = expr.split()
             result = int(tokens[0])
             for i in range(1, len(tokens), 2):
@@ -30,28 +36,23 @@ def evaluate(expression, precedence):
 
     def eval_recursive(expr):
         while "(" in expr:
-            expr = re.sub(r"\(([^()]+)\)", lambda m: str(eval_recursive(m[1])), expr)
+            expr = re.sub(r"\(([^()]+)\)", 
+                         lambda m: str(eval_recursive(m[1])), 
+                         expr)
         return eval_simple(expr)
 
     return eval_recursive(expression)
 
+def part1(expressions):
+    return sum(evaluate(expr, "equal") for expr in expressions)
 
-def solve(filename):
-    """Solve Day 18 for both parts."""
-    with open(filename) as f:
-        expressions = f.read().strip().split("\n")
+def part2(expressions):
+    return sum(evaluate(expr, "addition_first") for expr in expressions)
 
-    # Part 1: Addition and multiplication have the same precedence
-    part1_result = sum(evaluate(expr, "equal") for expr in expressions)
+def main():
+    expressions = read_input("2020/Day18/input.txt")
+    print(f"Part 1: {part1(expressions)}")
+    print(f"Part 2: {part2(expressions)}")
 
-    # Part 2: Addition has higher precedence than multiplication
-    part2_result = sum(evaluate(expr, "addition_first") for expr in expressions)
-
-    return part1_result, part2_result
-
-
-# Run the solution
-filename = "2020/Day18/input.txt"
-part1, part2 = solve(filename)
-print(f"Part 1: {part1}")
-print(f"Part 2: {part2}")
+if __name__ == "__main__":
+    main()
