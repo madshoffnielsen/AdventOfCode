@@ -25,73 +25,61 @@ def parse_input(filename):
 
     return rules, your_ticket, nearby_tickets
 
-
 def is_valid_value(value, rules):
-    """Check if a value is valid for any rule."""
     return any(value in r for ranges in rules.values() for r in ranges)
 
+def find_invalid_values(ticket, rules):
+    return [value for value in ticket if not is_valid_value(value, rules)]
 
-def discard_invalid_tickets(tickets, rules):
-    """Discard tickets with invalid values."""
-    valid_tickets = []
-    for ticket in tickets:
-        if all(is_valid_value(value, rules) for value in ticket):
-            valid_tickets.append(ticket)
-    return valid_tickets
+def get_valid_tickets(tickets, rules):
+    return [ticket for ticket in tickets if not find_invalid_values(ticket, rules)]
 
+def determine_fields(valid_tickets, rules):
+    positions = len(valid_tickets[0])
+    possible_fields = {}
+    
+    # Find possible fields for each position
+    for pos in range(positions):
+        values = [ticket[pos] for ticket in valid_tickets]
+        possible_fields[pos] = set()
+        for field, ranges in rules.items():
+            if all(any(v in r for r in ranges) for v in values):
+                possible_fields[pos].add(field)
+    
+    # Eliminate fields until each position has one field
+    field_mapping = {}
+    while possible_fields:
+        # Find position with only one possible field
+        pos = min(possible_fields, key=lambda p: len(possible_fields[p]))
+        field = possible_fields[pos].pop()
+        field_mapping[pos] = field
+        
+        # Remove this field from all other positions
+        for other_pos in possible_fields:
+            possible_fields[other_pos].discard(field)
+        
+        del possible_fields[pos]
+    
+    return field_mapping
 
-def identify_fields(valid_tickets, rules):
-    """Determine which field corresponds to each column."""
-    field_possibilities = {field: set(range(len(valid_tickets[0]))) for field in rules}
+def part1(rules, nearby_tickets):
+    return sum(sum(find_invalid_values(ticket, rules)) for ticket in nearby_tickets)
 
-    for ticket in valid_tickets:
-        for idx, value in enumerate(ticket):
-            for field, ranges in rules.items():
-                if not any(value in r for r in ranges):
-                    field_possibilities[field].discard(idx)
-
-    # Resolve fields with only one possibility iteratively
-    resolved_fields = {}
-    while field_possibilities:
-        for field, positions in field_possibilities.items():
-            if len(positions) == 1:
-                resolved_pos = positions.pop()
-                resolved_fields[field] = resolved_pos
-                del field_possibilities[field]
-                for other_positions in field_possibilities.values():
-                    other_positions.discard(resolved_pos)
-                break
-
-    return resolved_fields
-
-
-def solve(filename):
-    rules, your_ticket, nearby_tickets = parse_input(filename)
-
-    # Part 1: Sum of invalid values
-    invalid_sum = sum(
-        value
-        for ticket in nearby_tickets
-        for value in ticket
-        if not is_valid_value(value, rules)
-    )
-
-    # Part 2: Discard invalid tickets and identify fields
-    valid_tickets = discard_invalid_tickets(nearby_tickets, rules)
-    resolved_fields = identify_fields(valid_tickets, rules)
-
-    # Calculate the product of "departure" fields in your ticket
-    departure_product = prod(
-        your_ticket[idx]
-        for field, idx in resolved_fields.items()
+def part2(rules, your_ticket, nearby_tickets):
+    valid_tickets = get_valid_tickets(nearby_tickets, rules)
+    field_mapping = determine_fields(valid_tickets + [your_ticket], rules)
+    
+    departure_values = [
+        your_ticket[pos]
+        for pos, field in field_mapping.items()
         if field.startswith("departure")
-    )
+    ]
+    return prod(departure_values)
 
-    return invalid_sum, departure_product
+def main():
+    rules, your_ticket, nearby_tickets = parse_input("2020/Day16/input.txt")
+    print(f"Part 1: {part1(rules, nearby_tickets)}")
+    print(f"Part 2: {part2(rules, your_ticket, nearby_tickets)}")
 
-
-# Run the solution
-filename = "2020/Day16/input.txt"
-part1, part2 = solve(filename)
-print(f"Part 1: {part1}")
-print(f"Part 2: {part2}")
+if __name__ == "__main__":
+    main()
